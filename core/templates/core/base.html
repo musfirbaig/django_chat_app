@@ -6,7 +6,7 @@
     <title>ChatApp</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-yellow-50 mx-5 my-2">
+<body class="bg-yellow-100 mx-5 my-2">
     <nav class="flex justify-between items-center bg-yellow-200 px-5 py-5 rounded-md">
         <div class=""></div>
         <div class="text-white font-bold">
@@ -17,9 +17,16 @@
             <a class="bg-yellow-400 rounded-lg hover:bg-yellow-600 px-3 py-3">Sign Up</a>
         </div>
     </nav>
-    <div >
-        <h1>Welcome to chat app</h1>
-    </div>
+
+    <div class="flex justify-center items-center my-10">
+        <div class="w-3/5 text-center"> 
+            {% block content %}
+          
+        {% endblock content %}
+        </div>
+      </div>
+
+
     
 </body>
 </html>
