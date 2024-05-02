@@ -18,11 +18,11 @@
             <a href="{% url 'room:rooms' %}">View Rooms </a>
         </div>
         <div class="text-white font-bold">
-            <span class="mx-auto">Chat App</span>
+            <a class="mx-auto" href="{% url 'core:frontpage' %}">Chat App</a>
         </div>
         {% if user.is_authenticated %}
         <div class="items-center text-white">
-            <span class="px-3 py-3">Welcome, {{user.username}} !</span>
+            <span class="px-3 py-3 font-bold">Welcome, {{user.username}} !</span>
             <a href="{% url 'core:logout' %}" class="bg-yellow-400 rounded-lg hover:bg-yellow-600 px-3 py-3">Log Out</a>
         </div>
         {% else %}
