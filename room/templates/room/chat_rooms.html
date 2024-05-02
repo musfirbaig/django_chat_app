@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<h1 class="text-yellow-800 text-4xl font-bold">
+    Chat Rooms
+</h1>
+<a href="{% url 'room:create-room' %}">Create Room</a>
+
+<div class="mx-2 my-2">
+    {% for room in rooms %}
+    <h3>{{room.name}}</h3>
+    <a href="{% url 'room:chat-room' room.slug %}">Join Room</a>
+    {% endfor %}
+
+</div>
+{% endblock %}

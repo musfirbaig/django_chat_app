@@ -1,0 +1,92 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div>
+    <!-- display messages here -->
+    <div id="show-messages">
+
+    </div>
+    <!-- <p class="my-2 mx-2 bg-white rounded-xl"></p> -->
+    <form method="post" action=".">
+        {% csrf_token %}
+        <input type="text" id="chat-message">
+        <button type="submit" id="send-button">Send</button>
+    </form>
+    {{ room.slug|json_script:"json-roomname" }}
+    {{ username|json_script:"json-username" }}
+
+</div>
+{% endblock content %}
+
+
+
+{% block script %}
+  <script >
+    console.log("hello script is running...");
+
+    const userNameElement = document.getElementById("json-username");
+    const roomNameElement = document.getElementById("json-roomname");
+
+    
+    
+    if (userNameElement && roomNameElement) {
+        const userName = JSON.parse(userNameElement.textContent);
+        const roomName = JSON.parse(roomNameElement.textContent);
+
+        console.log("room name ", roomName);
+        // const ws_addr = "ws://"
+        //     + window.location.host
+        //     + '/ws/' + 'rooms/'
+        //     + roomName;
+        const ws_addr = "ws://"
+            + '127.0.0.1:8001'
+            + '/ws/' + 'rooms/'
+            + roomName;
+
+        console.log(ws_addr);
+        
+        const ws = new WebSocket(
+            ws_addr
+        );
+
+        // Event handler for successful connection
+        ws.onopen = function(event) {
+            console.log('WebSocket connection established.');
+        };
+
+        const messages = document.getElementById('show-messages');
+
+        function addMessage(messageData) {
+            messages.innerHTML = messages.innerHTML + `<p class="my-2 mx-2 bg-white rounded-xl">${messageData['username']} : ${messageData['message']}</p>`
+        }
+
+        // Event handler for receiving messages
+        ws.onmessage = function(event) {
+            console.log('Message received:', event.data);
+            messageData = JSON.parse(event.data)
+            addMessage(messageData);
+
+
+        };
+
+        
+
+        const chatInput = document.getElementById("chat-message");
+        const sendButton = document.getElementById("send-button");
+
+        sendButton.addEventListener('click', function(event) {
+            console.log("button clicked");
+            event.preventDefault();
+            const data = {
+                'message': chatInput.value,
+                'username': userName
+            };
+            const jsonData = JSON.stringify(data);
+            ws.send(jsonData);
+            chatInput.value = '';
+        });
+    }
+
+
+    </script>
+{% endblock script %}
