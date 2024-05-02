@@ -2,14 +2,16 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from .forms import RoomForm
 from .models import ChatRoom, Message
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required
 def rooms(request):
     rooms = ChatRoom.objects.all()
     return render(request, 'room/chat_rooms.html', {'rooms': rooms})
 
-
+@login_required
 def create_room(request):
     if request.method == 'POST':
         form = RoomForm(request.POST)
@@ -22,6 +24,7 @@ def create_room(request):
     context = {'form': form}
     return render(request, 'room/create_room.html', context)
 
+@login_required
 def chat_room(request, slug):
     room = ChatRoom.objects.filter(slug=slug).first()
     # print("printing roomname: ", slug)
