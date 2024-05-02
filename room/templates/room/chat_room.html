@@ -34,14 +34,14 @@
         const roomName = JSON.parse(roomNameElement.textContent);
 
         console.log("room name ", roomName);
-        // const ws_addr = "ws://"
-        //     + window.location.host
-        //     + '/ws/' + 'rooms/'
-        //     + roomName;
         const ws_addr = "ws://"
-            + '127.0.0.1:8001'
+            + window.location.host
             + '/ws/' + 'rooms/'
             + roomName;
+        // const ws_addr = "ws://"
+        //     + '127.0.0.1:8001'
+        //     + '/ws/' + 'rooms/'
+        //     + roomName;
 
         console.log(ws_addr);
         
