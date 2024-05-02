@@ -1,11 +1,19 @@
+import os
+from django.core.asgi import get_asgi_application
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "chat_app.settings")
+
+# Initialize Django ASGI application early
+django_asgi_app = get_asgi_application()
+
 # consumers.py
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-# from .models import Message
-# from .models import ChatRoom
-# from django.contrib.auth.models import User
+from .models import Message, ChatRoom
+from django.contrib.auth.models import User
 
 from asgiref.sync import sync_to_async
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -30,7 +38,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # saving message to database 
         # print("saving message to database should be executed")
-        # await self.save_message(username, room_name, message)
+        await self.save_message(username, room_name, message)
 
         # Broadcast message to all clients in the specific room group
         await self.channel_layer.group_send(
@@ -52,16 +60,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # print("chat message function called")
         await self.send(text_data=json.dumps({'message': message, 'username': username}))
 
-    # @sync_to_async
-    # def save_message(self, username, room_name, message):
-    #     # after broadcasting message, i am saving it in my database
-    #     room = ChatRoom.objects.filter(slug=room_name).first()
-    #     user = User.objects.filter(username=username).first()
-    #     print(ChatRoom.objects.all())
-    #     print("message is saving..")
-    #     print(room.name)
-    #     print(user.username)
-    #     new_message = Message.objects.create(room=room, user=user, content=message)
+    @sync_to_async
+    def save_message(self, username, room_name, message):
+        # after broadcasting message, i am saving it in my database
+        room = ChatRoom.objects.filter(slug=room_name).first()
+        user = User.objects.filter(username=username).first()
+        print(ChatRoom.objects.all())
+        print("message is saving..")
+        print(room.name)
+        print(user.username)
+        new_message = Message.objects.create(room=room, user=user, content=message)
 
     # async def save_message(self, username, room_name, message):
     #     try:

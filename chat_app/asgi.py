@@ -16,7 +16,9 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 from room.routing import websocket_urlpatterns
 
+import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chat_app.settings')
+django.setup()
 
 
 
