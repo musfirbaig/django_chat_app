@@ -1,16 +1,28 @@
 {% extends "core/base.html" %}
 
 {% block content %}
-<h1 class="text-yellow-800 text-4xl font-bold">
+<h1 class="text-yellow-800 text-4xl font-bold mb-10">
     Chat Rooms
 </h1>
-<a href="{% url 'room:create-room' %}">Create Room</a>
 
-<div class="mx-2 my-2">
+
+
+<a href="{% url 'room:create-room' %}" class="font-bold text-white text-xl mb-40 bg-yellow-400 rounded-xl p-3">Create Room</a>
+
+<div class="mx-2 my-2 mt-10">
+    {% for room in rooms %}
+    <div class="flex items-center justify-between bg-white rounded-xl p-4 mb-4">
+        <h3 class="text-lg font-semibold">{{ room.name }}</h3>
+        <a href="{% url 'room:chat-room' room.slug %}" class="px-4 py-2 bg-yellow-400 text-white rounded-md hover:bg-yellow-600">Join Room</a>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- <div class="mx-2 my-2">
     {% for room in rooms %}
     <h3>{{room.name}}</h3>
     <a href="{% url 'room:chat-room' room.slug %}">Join Room</a>
     {% endfor %}
 
-</div>
+</div> -->
 {% endblock %}
